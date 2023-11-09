@@ -1,13 +1,13 @@
 const express = require('express');
 const mysql = require('mysql2')
+const path = require('path');
 
 const app = express();
 app.use(express.json());
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 const port = 5000;
-
-const path = require('path');
-
-var jsonPatientData;
 
 var connection = mysql.createConnection({
     host        : 'localhost', //127.0.0.1
@@ -24,16 +24,34 @@ app.listen(port, ()=>{
     })
 });
 
+
 app.get('/patient', async (req, res)=>{
-    connection.connect();
+    // this gets the info from the database
     connection.query('SELECT * FROM patient', function(error, results, fields){
-        connection.end();
+        if (error) {
+            res.status(500).send('Error fetching patient data');
+            return;
+        }
+        // after getting the db info, it assigns it to patientData then renders the ejs 
+        // template views/patient.ejs which is essentially an html with js in it
+        res.render('patient', { patientData: results });
+        
+    });
+    
+});
+
+// I just had this here to reference the data structure of the db 
+app.get('/api/data/patient', async (req, res)=>{
+    
+    connection.query('SELECT * FROM patient', function(error, results, fields){
+        
         if (error) throw error;
         var jsonPatientData = res.json(results);
     });
-    //res.sendFile(path.join(__dirname, 'patient.html'));
+    
 });
 
+// this is not done yet
 app.get('/', (req, res)=>{
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.render('index');
 });
