@@ -5,6 +5,8 @@ const app = express();
 app.use(express.json());
 const port = 5000;
 
+const path = require('path');
+
 var connection = mysql.createConnection({
     host        : 'localhost', //127.0.0.1
     user        : 'root',
@@ -27,4 +29,8 @@ app.get('/patient', async (req, res)=>{
         if (error) throw error;
         res.json(results);
     });
+});
+
+app.get('/', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
