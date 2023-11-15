@@ -40,6 +40,21 @@ app.get('/patient', async (req, res)=>{
     
 });
 
+app.get('/patient_ins_hist', async (req, res)=>{
+    // this gets the info from the database
+    connection.query('SELECT * FROM patientinsurancehistory', function(error, results, fields){
+        if (error) {
+            res.status(500).send('Error fetching patient data');
+            return;
+        }
+        // after getting the db info, it assigns it to patientData then renders the ejs 
+        // template views/patient.ejs which is essentially an html with js in it
+        res.render('patient_ins_history', { patientInsuranceHistory: results });
+        
+    });
+    
+});
+
 // I just had this here to reference the data structure of the db 
 app.get('/api/data/patient', async (req, res)=>{
     
