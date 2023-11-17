@@ -1,8 +1,10 @@
 const express = require('express');
 const mysql = require('mysql2')
 const path = require('path');
+const bodyParser = require('body-parser');
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -40,6 +42,40 @@ app.get('/patient', async (req, res)=>{
     
 });
 
+// get the form for edit patient
+app.get('/edit-patient/:patientId', (req, res) => {
+    const { patientId } = req.params;
+
+    // Fetch patient data based on the patientId
+    connection.query('SELECT * FROM Patient WHERE PatientId = ?', [patientId], (error, results) => {
+        if (error) {
+            console.error('Error fetching patient data:', error);
+            res.status(500).send('Error fetching patient data');
+        } else {
+            // Render the editPatient.ejs page with the patient data
+            res.render('editPatient', { patientData: results[0] });
+        }
+    });
+});
+
+// edit patient insurance id so far
+app.post('/edit/patient', (req,res)=>{
+    const {patientId, newInsId} = req.body;
+    console.log(req.body);
+
+    connection.query('UPDATE Patient SET InsuranceID=? WHERE PatientId=?',
+    [newInsId, patientId],
+    (error, results) =>{
+        if (error){
+            console.error('Error updating the patient data:', error);
+            res.status(500).send('Error updating patient data');
+        } else {
+            res.redirect('/');
+        }
+    }
+    )
+})
+
 app.get('/patient_ins_hist', async (req, res)=>{
     // this gets the info from the database
     connection.query('SELECT * FROM patientinsurancehistory', function(error, results, fields){
@@ -66,7 +102,30 @@ app.get('/api/data/patient', async (req, res)=>{
     
 });
 
+// Patient Visit table
+app.get('/patient', async (req, res)=>{
+    // this gets the info from the database
+    connection.query('SELECT * FROM patient', function(error, results, fields){
+        if (error) {
+            res.status(500).send('Error fetching patient data');
+            return;
+        }
+        // after getting the db info, it assigns it to patientData then renders the ejs 
+        // template views/patient.ejs which is essentially an html with js in it
+        res.render('patient', { patientData: results });
+        
+    });
+    
+});
+
 // this is not done yet
 app.get('/', (req, res)=>{
-    res.render('index');
+    connection.query('SELECT * FROM patient', function(error, results, fields){
+        if(error){
+            res.status(500).send('Error Fetching patient visit data');
+            return;
+        }
+        res.render('index', {patientData: results});
+    });
+    
 });
