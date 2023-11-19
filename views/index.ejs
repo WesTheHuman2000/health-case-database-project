@@ -18,6 +18,7 @@
             <div class="navbar-nav">
               <a class="nav-link" href="/patient">Patient Information</a>
               <a class="nav-link" href="/patient_ins_hist">Patient Insurance History</a>
+              <a class="nav-link" href="/patientUpdated">Patient Update History</a>
             </div>
           </div>
         </div>
@@ -47,7 +48,6 @@
                         <td><%= patientData[i].Ins_ID %><</td>
                         <td><%= patientData[i].CreatedDate %><</td>
                         <td>
-                            <a href="" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
                             <a href="/edit-patient/<%= patientData[i].PatientId %>" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             <a href="" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>

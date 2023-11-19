@@ -89,6 +89,21 @@ app.get('/patient_ins_hist', async (req, res)=>{
     
 });
 
+// gets patient updateAddresses view
+app.get('/patientUpdated', async (req, res)=>{
+    // this gets the info from the database
+    connection.query('SELECT * FROM patientUpdatedAddresses', function(error, results, fields){
+        if (error) {
+            res.status(500).send('Error fetching patient updated addresses view');
+            return;
+        }
+        
+        res.render('patientUpdated', { patientUpdated: results });
+        
+    });
+    
+});
+
 // I just had this here to reference the data structure of the db 
 app.get('/api/data/patient', async (req, res)=>{
     

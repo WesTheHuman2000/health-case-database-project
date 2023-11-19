@@ -16,8 +16,14 @@
                 <th>Patient ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
+                <th>Dob</th>
                 <th>Insurance Number</th>
                 <th>Insurnace ID</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Zip</th>
                 <th>Date</th>
                 <th>Action</th>
             </tr>
@@ -28,11 +34,16 @@
                     <td><%= patientData[i].PatientId %></td>
                     <td><%= patientData[i].Firstname %></td>
                     <td><%= patientData[i].Lastname %></td>
+                    <td><%= patientData[i].Dob %></td>
                     <td><%= patientData[i].InsuranceID %><</td>
                     <td><%= patientData[i].Ins_ID %><</td>
+                    <td><%= patientData[i].Emailaddress %><</td>
+                    <td><%= patientData[i].Address1 %><</td>
+                    <td><%= patientData[i].City %><</td>
+                    <td><%= patientData[i].State %><</td>
+                    <td><%= patientData[i].ZipCode %><</td>
                     <td><%= patientData[i].CreatedDate %><</td>
                     <td>
-                        <a href="" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
                         <a href="/edit-patient/<%= patientData[i].PatientId %>" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                         <a href="" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                     </td>
