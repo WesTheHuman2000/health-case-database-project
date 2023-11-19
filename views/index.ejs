@@ -22,8 +22,9 @@
           </div>
         </div>
       </nav>
-    <h1>Patient Visit</h1>
+    
     <div class="container">
+      <h1 class="text-center">Patient Data</h1>
        <table class="table table-bordered">
             <thead>
                 <tr>
@@ -37,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <% for (let i = 0; i < patientData.length; i++) { %>
+                <% for (let i = 0; i < 10; i++) { %>
                     <tr>
                         <td><%= patientData[i].PatientId %></td>
                         <td><%= patientData[i].Firstname %></td>
@@ -54,6 +55,34 @@
                 <% } %>
             </tbody>
         </table> 
+        
+        <h1 class="text-center">Patient Visits</h1>
+        <table class="table table-bordered">
+          <thead>
+              <tr>
+                  <th>Patient ID</th>
+                  <th>Patient Name</th>
+                  <th>Visit ID</th>
+                  <th>Diagnosis ID</th>
+                  <th>Diagnosis</th>
+                  <th>Visited</th>
+              </tr>
+          </thead>
+          <tbody>
+              <% for (let i = 0; i < 10; i++) { %>
+                  <tr>
+                      <td><%= patientVisit[i].PatientId %></td>
+                      <td><%= patientVisit[i].PatientName %></td>
+                      <td><%= patientVisit[i].pvisit_id %></td>
+                      <td><%= patientVisit[i].diag_id %><</td>
+                      <td><%= patientVisit[i].Diag_Desc %><</td>
+                      <td><%= patientVisit[i].CreatedDate %><</td>
+                  </tr>
+              <% } %>
+          </tbody>
+      </table> 
+      <div class="text-center">To view full patient visits go to <a href="/patientVisit">Patient Visit</a>, to view full patient data go to <a href="/patient">Patient Information</a>
+      </div>
     </div>
     
     

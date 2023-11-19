@@ -83,8 +83,6 @@ app.get('/patient_ins_hist', async (req, res)=>{
             res.status(500).send('Error fetching patient data');
             return;
         }
-        // after getting the db info, it assigns it to patientData then renders the ejs 
-        // template views/patient.ejs which is essentially an html with js in it
         res.render('patient_ins_history', { patientInsuranceHistory: results });
         
     });
@@ -102,30 +100,47 @@ app.get('/api/data/patient', async (req, res)=>{
     
 });
 
-// Patient Visit table
-app.get('/patient', async (req, res)=>{
+// Patient Diagnosis Visit table
+app.get('/patientVisit', async (req, res)=>{
     // this gets the info from the database
-    connection.query('SELECT * FROM patient', function(error, results, fields){
+    connection.query('SELECT * FROM PatientDiagnosisView', function(error, results, fields){
         if (error) {
-            res.status(500).send('Error fetching patient data');
+            res.status(500).send('Error fetching patient visit diagnosis view');
             return;
         }
-        // after getting the db info, it assigns it to patientData then renders the ejs 
-        // template views/patient.ejs which is essentially an html with js in it
-        res.render('patient', { patientData: results });
+       
+        res.render('patientVisit', { patientVisit: results });
         
     });
     
 });
 
 // this is not done yet
-app.get('/', (req, res)=>{
-    connection.query('SELECT * FROM patient', function(error, results, fields){
-        if(error){
-            res.status(500).send('Error Fetching patient visit data');
-            return;
-        }
-        res.render('index', {patientData: results});
+app.get('/', async(req, res)=>{
+    const patientQuery = new Promise((resolve, reject)=>{
+        connection.query('SELECT * FROM patient', function(error, results, fields){
+                if(error){
+                    reject(error);
+                    return;
+                }
+                resolve(results);
+            });
+    });
+
+    const diagnosisViewQuery = new Promise((resolve, reject)=>{
+        connection.query('SELECT * FROM PatientDiagnosisView',(error, results)=>{
+            if(error){
+                reject(error);
+                return;
+            }
+            resolve(results);
+        });
     });
     
+    const [patientData, patientVisit] =  await Promise.all([patientQuery, diagnosisViewQuery]);
+
+    res.render('index', {
+        patientData: patientData,
+        patientVisit: patientVisit
+    });
 });

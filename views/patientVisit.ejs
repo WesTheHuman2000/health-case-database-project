@@ -22,23 +22,34 @@
           </div>
         </div>
       </nav>
-    <h1>Edit Patient</h1>
-    <form id="editPatientForm" action="/edit/patient" method="post" >
-        <input type="hidden" name="patientId" value="<%= patientData.PatientId %>">
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Insurance Number</label>
-          <input type="text" name="newInsId" id="newInsId" value="<%= patientData.InsuranceID %>">
-          <div class="form-text">UUI4716824</div>
-        </div>
-        
-        <!--
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>    
-        -->
-        
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+    <h1>Patient Visit</h1>
+    <div class="container">
+       <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Visit ID</th>
+                    <th>Diagnosis ID</th>
+                    <th>Diagnosis</th>
+                    <th>Visited</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < patientVisit.length; i++) { %>
+                    <tr>
+                        <td><%= patientVisit[i].PatientId %></td>
+                        <td><%= patientVisit[i].PatientName %></td>
+                        <td><%= patientVisit[i].pvisit_id %></td>
+                        <td><%= patientVisit[i].diag_id %><</td>
+                        <td><%= patientVisit[i].Diag_Desc %><</td>
+                        <td><%= patientVisit[i].CreatedDate %><</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table> 
+    </div>
+    
+    
 </body>
 </html>
