@@ -75,7 +75,45 @@ app.post('/edit/patient', (req,res)=>{
         }
     }
     )
-})
+});
+
+// create patient form
+app.get('/createPatient', async (req, res)=>{
+    // strictly for rendering the form
+     res.render('createPatient');
+});
+
+
+app.post('/createPatient', (req, res) => {
+    const {
+        Firstname,
+        Lastname,
+        Dob,
+        InsuranceID,
+        Ins_ID,
+        Emailaddress,
+        Address1,
+        City,
+        State,
+        ZipCode
+    } = req.body;
+    console.log(req.body);
+    // Perform the database insertion
+    connection.query('INSERT INTO Patient (Firstname, Lastname, Dob, InsuranceID, Ins_ID, Emailaddress, Address1, City, State, ZipCode, CreatedBy, CreatedDate, ModifiedBy, ModifiedDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NOW())',
+        [Firstname, Lastname, Dob, InsuranceID, Ins_ID, Emailaddress, Address1, City, State, ZipCode, 1, 1],
+        (error, results) => {
+            if (error) {
+                console.error('Error inserting new patient:', error);
+                res.status(500).send('Error inserting new patient');
+            } else {
+                // Redirect to the patient list page or any other page as needed
+                console.log('Received form data:', req.body);
+                res.redirect('/patient');
+            }
+        }
+    );
+});
+
 
 app.get('/patient_ins_hist', async (req, res)=>{
     // this gets the info from the database

@@ -8,27 +8,43 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">   
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/">Health Care System</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-              <a class="nav-link" href="/patient">Patient Information</a>
-              <a class="nav-link" href="/patient_ins_hist">Patient Insurance History</a>
-            </div>
-          </div>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Health Care System</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link" href="/patient">Patient Information</a>
+          <a class="nav-link" href="/patient_ins_hist">Patient Insurance History</a>
+          <a class="nav-link" href="/patientUpdated">Patient Update History</a>
+          <a class="nav-link" href="/createPatient">Create Patient</a>
+          <a class="nav-link" href="/patientVisit">Patient Visit Diagnosis</a>
         </div>
-      </nav>
+      </div>
+    </div>
+</nav>
     <h1>Edit Patient</h1>
     <form id="editPatientForm" action="/edit/patient" method="post" >
         <input type="hidden" name="patientId" value="<%= patientData.PatientId %>">
-        <div class="mb-3">
-          <label for="newInsId" class="form-label">Insurance Number</label>
-          <input type="text" name="newInsId" id="newInsId" value="<%= patientData.InsuranceID %>">
-        </div>
+        
+        <select id="newInsId" name="newInsId" class="form-select" name="">
+          <option value="UUI2536584">UUI2536584</option>
+          <option value="UUI2722096">UUI2722096</option>
+          <option value="UUI3182647">UUI3182647</option>
+          <option value="UUI320287">UUI320287</option>
+          <option value="UUI3231448">UUI3231448</option>
+          <option value="UUI3300800">UUI3300800</option>
+          <option value="UUI3905062">UUI3905062</option>
+          <option value="UUI4286889">UUI4286889</option>
+          <option value="UUI4543246">UUI4543246</option>
+          <option value="UUI4560719">UUI4560719</option>
+          <option value="UUI4633330">UUI4633330</option>
+          <option value="UUI4654820">UUI4654820</option>
+          <option value="UUI4716824">UUI4716824</option>
+          <option value="UUI4807415">UUI4807415</option>
+      </select>
 
         <div class="mb-3">
           <label for="newAddress" class="form-label">Address</label>

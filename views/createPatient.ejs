@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">   
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Health Care System</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link" href="/patient">Patient Information</a>
+              <a class="nav-link" href="/patient_ins_hist">Patient Insurance History</a>
+              <a class="nav-link" href="/patientUpdated">Patient Update History</a>
+              <a class="nav-link" href="/createPatient">Create Patient</a>
+              <a class="nav-link" href="/patientVisit">Patient Visit Diagnosis</a>
+            </div>
+          </div>
+        </div>
+    </nav>
+    <h1>Create Patient</h1>
+    <!--Change the address-->
+    <!--Change action-->
+    <form id="createPatient" action="/createPatient" method="post" >
+        
+        <div class="mb-3">
+          <label for="Firstname" class="form-label">First Name</label>
+          <input type="text" name="Firstname" id="Firstname" value="">
+        </div>
+
+        <div class="mb-3">
+          <label for="Lastname" class="form-label">Last Name</label>
+          <input type="text" name="Lastname" id="Lastname" value="">
+        </div>
+
+        <!--Add some date validation for sql-->
+        <div class="mb-3">
+          <label for="Dob" class="form-label">Date of Birth</label>
+          <input type="date" name="Dob" id="Dob" value="">
+        </div>
+
+        <label for="InsuranceID" class="form-label">Insurance ID</label>
+        
+        <select id="InsuranceID" name="InsuranceID" class="form-select" name="">
+            <option value="UUI2536584">UUI2536584</option>
+            <option value="UUI2722096">UUI2722096</option>
+            <option value="UUI3182647">UUI3182647</option>
+            <option value="UUI320287">UUI320287</option>
+            <option value="UUI3231448">UUI3231448</option>
+            <option value="UUI3300800">UUI3300800</option>
+            <option value="UUI3905062">UUI3905062</option>
+            <option value="UUI4286889">UUI4286889</option>
+            <option value="UUI4543246">UUI4543246</option>
+            <option value="UUI4560719">UUI4560719</option>
+            <option value="UUI4633330">UUI4633330</option>
+            <option value="UUI4654820">UUI4654820</option>
+            <option value="UUI4716824">UUI4716824</option>
+            <option value="UUI4807415">UUI4807415</option>
+        </select>
+
+        <label for="Ins_ID" class="form-label">Insurance Number</label>
+        
+        <select id="Ins_ID" name="Ins_ID" class="form-select">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </select>
+
+        <div class="mb-3">
+            <label for="Emailaddress" class="form-label">Email</label>
+            <input type="email" name="Emailaddress" id="Emailaddress" value="">
+        </div>
+
+        <div class="mb-3">
+            <label for="Address1" class="form-label">Address</label>
+            <input type="text" name="Address1" id="Address1" value="">
+        </div>
+
+        <div class="mb-3">
+            <label for="City" class="form-label">City</label>
+            <input type="text" name="City" id="City" value="">
+        </div>
+
+        <div class="mb-3">
+            <label for="State" class="form-label">State</label>
+            <input type="text" name="State" id="State" value="">
+        </div>
+
+        <div class="mb-3">
+            <label for="ZipCode" class="form-label">Zip</label>
+            <input type="text" name="ZipCode" id="ZipCode" value="">
+        </div>
+          
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+</body>
+</html>
