@@ -26,11 +26,24 @@
     <form id="editPatientForm" action="/edit/patient" method="post" >
         <input type="hidden" name="patientId" value="<%= patientData.PatientId %>">
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Insurance Number</label>
+          <label for="newInsId" class="form-label">Insurance Number</label>
           <input type="text" name="newInsId" id="newInsId" value="<%= patientData.InsuranceID %>">
-          
+        </div>
+
+        <div class="mb-3">
+          <label for="newAddress" class="form-label">Address</label>
+          <input type="text" name="newAddress" id="newAddress" value="<%= patientData.Address1 %>">
+        </div>
+
+        <div class="mb-3">
+          <label for="newZip" class="form-label">Zip</label>
+          <input type="text" name="newZip" id="newZip" value="<%= patientData.ZipCode %>">
         </div>
         
+        <div class="mb-3">
+          <label for="newCity" class="form-label">City</label>
+          <input type="text" name="newCity" id="newCity" value="<%= patientData.City %>">
+        </div>
         <!--
         <div class="mb-3">
           <label for="exampleInputPassword1" class="form-label">Password</label>

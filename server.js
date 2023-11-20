@@ -59,12 +59,13 @@ app.get('/edit-patient/:patientId', (req, res) => {
 });
 
 // edit patient insurance id so far
+// edit address, zip, city
 app.post('/edit/patient', (req,res)=>{
-    const {patientId, newInsId} = req.body;
+    const {patientId, newInsId, newAddress, newZip, newCity} = req.body;
     console.log(req.body);
 
-    connection.query('UPDATE Patient SET InsuranceID=? WHERE PatientId=?',
-    [newInsId, patientId],
+    connection.query('UPDATE Patient SET InsuranceID=?, Address1=?, ZipCode =?, City=?  WHERE PatientId=?',
+    [newInsId, newAddress, newZip, newCity, patientId,],
     (error, results) =>{
         if (error){
             console.error('Error updating the patient data:', error);
@@ -130,7 +131,7 @@ app.get('/patientVisit', async (req, res)=>{
     
 });
 
-// this is not done yet
+// done
 app.get('/', async(req, res)=>{
     const patientQuery = new Promise((resolve, reject)=>{
         connection.query('SELECT * FROM patient', function(error, results, fields){
@@ -159,3 +160,7 @@ app.get('/', async(req, res)=>{
         patientVisit: patientVisit
     });
 });
+
+// work on completing the write to patients table function
+// work on the login functionality
+// work on the delete from table functionality
