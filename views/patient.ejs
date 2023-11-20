@@ -8,6 +8,22 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Health Care System</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link" href="/patient">Patient Information</a>
+              <a class="nav-link" href="/patient_ins_hist">Patient Insurance History</a>
+              <a class="nav-link" href="/patientUpdated">Patient Update History</a>
+              <a class="nav-link" href="/createPatient">Create Patient</a>
+            </div>
+          </div>
+        </div>
+    </nav>
     <h1>Patient Data</h1>
     <div class="container">
        <table class="table table-bordered">
@@ -45,7 +61,7 @@
                     <td><%= patientData[i].CreatedDate %><</td>
                     <td>
                         <a href="/edit-patient/<%= patientData[i].PatientId %>" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                        <a href="" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        <a href="/deletePatient/<%= patientData[i].PatientId %>" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                     </td>
                 </tr>
             <% } %>
