@@ -49,7 +49,7 @@
                         <td><%= patientData[i].CreatedDate %><</td>
                         <td>
                             <a href="/edit-patient/<%= patientData[i].PatientId %>" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a href="" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                            <a href="/deletePatient/<%= patientData[i].PatientId %>" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
                     </tr>
                 <% } %>

@@ -131,6 +131,39 @@ app.get('/patientVisit', async (req, res)=>{
     
 });
 
+// delete patient
+app.get('/deletePatient/:patientId', (req, res) => {
+    const { patientId } = req.params;
+
+    // Fetch patient data based on the patientId
+    connection.query('SELECT * FROM Patient WHERE PatientId = ?', [patientId], (error, results) => {
+        if (error) {
+            console.error('Error fetching patient data:', error);
+            res.status(500).send('Error fetching patient data');
+        } else {
+            // Render the editPatient.ejs page with the patient data
+            res.render('deletePatient', { patientData: results[0] });
+        }
+    });
+});
+
+app.post('/deletePatient/:patientId', (req,res)=>{
+    const {patientId} = req.params;
+    
+
+    connection.query('DELETE FROM Patient WHERE PatientId = ?',
+    [ patientId,],
+    (error, results) =>{
+        if (error){
+            console.error('Error deleting the patient data:', error);
+            res.status(500).send('Error updating patient data');
+        } else {
+            res.redirect('/');
+        }
+    }
+    )
+})
+
 // done
 app.get('/', async(req, res)=>{
     const patientQuery = new Promise((resolve, reject)=>{
