@@ -1,8 +1,10 @@
 const express = require('express');
 const mysql = require('mysql2')
 const path = require('path');
+const bodyParser = require('body-parser');
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -40,6 +42,69 @@ app.get('/patient', async (req, res)=>{
     
 });
 
+// get the form for edit patient
+app.get('/edit-patient/:patientId', (req, res) => {
+    const { patientId } = req.params;
+
+    // Fetch patient data based on the patientId
+    connection.query('SELECT * FROM Patient WHERE PatientId = ?', [patientId], (error, results) => {
+        if (error) {
+            console.error('Error fetching patient data:', error);
+            res.status(500).send('Error fetching patient data');
+        } else {
+            // Render the editPatient.ejs page with the patient data
+            res.render('editPatient', { patientData: results[0] });
+        }
+    });
+});
+
+// edit patient insurance id so far
+// edit address, zip, city
+app.post('/edit/patient', (req,res)=>{
+    const {patientId, newInsId, newAddress, newZip, newCity} = req.body;
+    console.log(req.body);
+
+    connection.query('UPDATE Patient SET InsuranceID=?, Address1=?, ZipCode =?, City=?  WHERE PatientId=?',
+    [newInsId, newAddress, newZip, newCity, patientId,],
+    (error, results) =>{
+        if (error){
+            console.error('Error updating the patient data:', error);
+            res.status(500).send('Error updating patient data');
+        } else {
+            res.redirect('/');
+        }
+    }
+    )
+})
+
+app.get('/patient_ins_hist', async (req, res)=>{
+    // this gets the info from the database
+    connection.query('SELECT * FROM patientinsurancehistory', function(error, results, fields){
+        if (error) {
+            res.status(500).send('Error fetching patient data');
+            return;
+        }
+        res.render('patient_ins_history', { patientInsuranceHistory: results });
+        
+    });
+    
+});
+
+// gets patient updateAddresses view
+app.get('/patientUpdated', async (req, res)=>{
+    // this gets the info from the database
+    connection.query('SELECT * FROM patientUpdatedAddresses', function(error, results, fields){
+        if (error) {
+            res.status(500).send('Error fetching patient updated addresses view');
+            return;
+        }
+        
+        res.render('patientUpdated', { patientUpdated: results });
+        
+    });
+    
+});
+
 // I just had this here to reference the data structure of the db 
 app.get('/api/data/patient', async (req, res)=>{
     
@@ -51,7 +116,84 @@ app.get('/api/data/patient', async (req, res)=>{
     
 });
 
-// this is not done yet
-app.get('/', (req, res)=>{
-    res.render('index');
+// Patient Diagnosis Visit table
+app.get('/patientVisit', async (req, res)=>{
+    // this gets the info from the database
+    connection.query('SELECT * FROM PatientDiagnosisView', function(error, results, fields){
+        if (error) {
+            res.status(500).send('Error fetching patient visit diagnosis view');
+            return;
+        }
+       
+        res.render('patientVisit', { patientVisit: results });
+        
+    });
+    
 });
+
+// delete patient
+app.get('/deletePatient/:patientId', (req, res) => {
+    const { patientId } = req.params;
+
+    // Fetch patient data based on the patientId
+    connection.query('SELECT * FROM Patient WHERE PatientId = ?', [patientId], (error, results) => {
+        if (error) {
+            console.error('Error fetching patient data:', error);
+            res.status(500).send('Error fetching patient data');
+        } else {
+            // Render the editPatient.ejs page with the patient data
+            res.render('deletePatient', { patientData: results[0] });
+        }
+    });
+});
+
+app.post('/deletePatient/:patientId', (req,res)=>{
+    const {patientId} = req.params;
+    
+
+    connection.query('DELETE FROM Patient WHERE PatientId = ?',
+    [ patientId,],
+    (error, results) =>{
+        if (error){
+            console.error('Error deleting the patient data:', error);
+            res.status(500).send('Error updating patient data');
+        } else {
+            res.redirect('/');
+        }
+    }
+    )
+})
+
+// done
+app.get('/', async(req, res)=>{
+    const patientQuery = new Promise((resolve, reject)=>{
+        connection.query('SELECT * FROM patient', function(error, results, fields){
+                if(error){
+                    reject(error);
+                    return;
+                }
+                resolve(results);
+            });
+    });
+
+    const diagnosisViewQuery = new Promise((resolve, reject)=>{
+        connection.query('SELECT * FROM PatientDiagnosisView',(error, results)=>{
+            if(error){
+                reject(error);
+                return;
+            }
+            resolve(results);
+        });
+    });
+    
+    const [patientData, patientVisit] =  await Promise.all([patientQuery, diagnosisViewQuery]);
+
+    res.render('index', {
+        patientData: patientData,
+        patientVisit: patientVisit
+    });
+});
+
+// work on completing the write to patients table function
+// work on the login functionality
+// work on the delete from table functionality

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+</head>
+<body>
+    <h1>Patient Data</h1>
+    <div class="container">
+       <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>PatientID</th>
+                    <th>Old Insurance Number</th>
+                    <th>New Insurance Number</th>
+                    <th>Modified</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < patientInsuranceHistory.length; i++) { %>
+                    <tr>
+                        <td><%= patientInsuranceHistory[i].ins_his_id %></td>
+                        <td><%= patientInsuranceHistory[i].PatientId %></td>
+                        <td><%= patientInsuranceHistory[i].OldInsuranceNo %></td>
+                        <td><%= patientInsuranceHistory[i].NewInsuranceNo %></td>
+                        <td><%= patientInsuranceHistory[i].ModifiedDate %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table> 
+    </div>
+    
+    
+</body>
+</html>
