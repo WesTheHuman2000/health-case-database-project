@@ -34,6 +34,13 @@
             <a href="/logout" class="btn btn-primary">Logout</a>
 
         <% } %>
+
+        <% if (message != "") { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <%= message %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% } %>
       <h1 class="text-center">Patient Data</h1>
        <table class="table table-bordered">
             <thead>
@@ -44,7 +51,9 @@
                     <th>Insurance Number</th>
                     <th>Insurnace ID</th>
                     <th>Date</th>
+                    <% if (session.user_id != 12) { %>
                     <th>Action</th>
+                    <% } %>
                 </tr>
             </thead>
             <tbody>
@@ -56,10 +65,12 @@
                         <td><%= patientData[i].InsuranceID %><</td>
                         <td><%= patientData[i].Ins_ID %><</td>
                         <td><%= patientData[i].CreatedDate %><</td>
+                        <% if (session.user_id != 12 ) { %>
                         <td>
                             <a href="/edit-patient/<%= patientData[i].PatientId %>" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             <a href="/deletePatient/<%= patientData[i].PatientId %>" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
+                        <% } %>
                     </tr>
                 <% } %>
             </tbody>
