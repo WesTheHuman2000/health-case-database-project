@@ -114,6 +114,19 @@ app.post('/createPatient', (req, res) => {
     );
 });
 
+// stored procedure for inserting dummy patient
+app.get('/createDummyPatient', (req, res)=>{
+    connection.query('CALL InsertDummyPatient()', (error,results,fields)=>{
+        if(error){
+            console.log('Error adding dummy patient through stored procedure', error);
+        } else{
+            console.log('added dummy patient')
+            res.redirect('/patient');
+        }
+    });
+});
+
+
 
 app.get('/patient_ins_hist', async (req, res)=>{
     // this gets the info from the database
@@ -196,7 +209,7 @@ app.post('/deletePatient/:patientId', (req,res)=>{
             console.error('Error deleting the patient data:', error);
             res.status(500).send('Error updating patient data');
         } else {
-            res.redirect('/');
+            res.redirect('/patient');
         }
     }
     )
