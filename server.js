@@ -3,6 +3,7 @@ const mysql = require('mysql2')
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const authMiddleWare = require('./authMiddleWare');
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,7 +36,7 @@ app.listen(port, ()=>{
 });
 
 
-app.get('/patient', async (req, res)=>{
+app.get('/patient', authMiddleWare.loginAuth, async (req, res)=>{
     // this gets the info from the database
     connection.query('SELECT * FROM patient', function(error, results, fields){
         if (error) {
@@ -51,7 +52,7 @@ app.get('/patient', async (req, res)=>{
 });
 
 // get the form for edit patient
-app.get('/edit-patient/:patientId', (req, res) => {
+app.get('/edit-patient/:patientId', authMiddleWare.loginAuth, (req, res) => {
     const { patientId } = req.params;
 
     // Fetch patient data based on the patientId
@@ -68,7 +69,7 @@ app.get('/edit-patient/:patientId', (req, res) => {
 
 // edit patient insurance id so far
 // edit address, zip, city
-app.post('/edit/patient', (req,res)=>{
+app.post('/edit/patient', authMiddleWare.loginAuth, (req,res)=>{
     const {patientId, newInsId, newAddress, newZip, newCity} = req.body;
     console.log(req.body);
 
@@ -86,13 +87,13 @@ app.post('/edit/patient', (req,res)=>{
 });
 
 // create patient form
-app.get('/createPatient', async (req, res)=>{
+app.get('/createPatient', authMiddleWare.loginAuth, async (req, res)=>{
     // strictly for rendering the form
      res.render('createPatient');
 });
 
 
-app.post('/createPatient', (req, res) => {
+app.post('/createPatient', authMiddleWare.loginAuth, (req, res) => {
     const {
         Firstname,
         Lastname,
@@ -123,7 +124,7 @@ app.post('/createPatient', (req, res) => {
 });
 
 // stored procedure for inserting dummy patient
-app.get('/createDummyPatient', (req, res)=>{
+app.get('/createDummyPatient', authMiddleWare.loginAuth, (req, res)=>{
     connection.query('CALL InsertDummyPatient()', (error,results,fields)=>{
         if(error){
             console.log('Error adding dummy patient through stored procedure', error);
@@ -136,7 +137,7 @@ app.get('/createDummyPatient', (req, res)=>{
 
 
 
-app.get('/patient_ins_hist', async (req, res)=>{
+app.get('/patient_ins_hist', authMiddleWare.loginAuth, async (req, res)=>{
     // this gets the info from the database
     connection.query('SELECT * FROM patientinsurancehistory', function(error, results, fields){
         if (error) {
@@ -150,7 +151,7 @@ app.get('/patient_ins_hist', async (req, res)=>{
 });
 
 // gets patient updateAddresses view
-app.get('/patientUpdated', async (req, res)=>{
+app.get('/patientUpdated', authMiddleWare.loginAuth, async (req, res)=>{
     // this gets the info from the database
     connection.query('SELECT * FROM patientUpdatedAddresses', function(error, results, fields){
         if (error) {
@@ -165,7 +166,7 @@ app.get('/patientUpdated', async (req, res)=>{
 });
 
 // I just had this here to reference the data structure of the db 
-app.get('/api/data/patient', async (req, res)=>{
+app.get('/api/data/patient', authMiddleWare.loginAuth, async (req, res)=>{
     
     connection.query('SELECT * FROM patient', function(error, results, fields){
         
@@ -176,7 +177,7 @@ app.get('/api/data/patient', async (req, res)=>{
 });
 
 // Patient Diagnosis Visit table
-app.get('/patientVisit', async (req, res)=>{
+app.get('/patientVisit', authMiddleWare.loginAuth, async (req, res)=>{
     // this gets the info from the database
     connection.query('SELECT * FROM PatientDiagnosisView', function(error, results, fields){
         if (error) {
@@ -191,7 +192,7 @@ app.get('/patientVisit', async (req, res)=>{
 });
 
 // delete patient
-app.get('/deletePatient/:patientId', (req, res) => {
+app.get('/deletePatient/:patientId', authMiddleWare.loginAuth, authMiddleWare.requireAuth, (req, res) => {
     const { patientId } = req.params;
 
     // Fetch patient data based on the patientId
@@ -206,7 +207,7 @@ app.get('/deletePatient/:patientId', (req, res) => {
     });
 });
 
-app.post('/deletePatient/:patientId', (req,res)=>{
+app.post('/deletePatient/:patientId', authMiddleWare.loginAuth, authMiddleWare.requireAuth, (req,res)=>{
     const {patientId} = req.params;
     
 
@@ -224,7 +225,7 @@ app.post('/deletePatient/:patientId', (req,res)=>{
 })
 
 // done
-app.get('/', async(req, res)=>{
+app.get('/', authMiddleWare.loginAuth, async(req, res)=>{
     const patientQuery = new Promise((resolve, reject)=>{
         connection.query('SELECT * FROM patient', function(error, results, fields){
                 if(error){
@@ -246,10 +247,12 @@ app.get('/', async(req, res)=>{
     });
     
     const [patientData, patientVisit] =  await Promise.all([patientQuery, diagnosisViewQuery]); 
+    let message = req.query.message || "";
     res.render('index', {
         patientData: patientData,
         patientVisit: patientVisit,
-        session: req.session
+        session: req.session,
+        message
     });
 });
 
@@ -336,7 +339,7 @@ app.get('/login', (req, res) => {
 
 
 // Logout or destroy session
-app.get('/logout', function(request, response){
+app.get('/logout', authMiddleWare.loginAuth, function(request, response){
 
     request.session.destroy();
     let message = "User successfully logged out"
