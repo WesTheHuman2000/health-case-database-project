@@ -27,6 +27,13 @@
     </nav>
     
     <div class="container">
+        <% if(session.user_id) { %>
+
+            <h1>Hi <%= session.firstname %>, Welcome</h1>
+
+            <a href="/logout" class="btn btn-primary">Logout</a>
+
+        <% } %>
       <h1 class="text-center">Patient Data</h1>
        <table class="table table-bordered">
             <thead>
