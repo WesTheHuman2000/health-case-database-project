@@ -2,10 +2,18 @@ const express = require('express');
 const mysql = require('mysql2')
 const path = require('path');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(session({
+    secret : 'patientdata',
+    resave : false,
+    saveUninitialized : true
+  }));
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -186,14 +194,104 @@ app.get('/', async(req, res)=>{
         });
     });
     
-    const [patientData, patientVisit] =  await Promise.all([patientQuery, diagnosisViewQuery]);
-
+    const [patientData, patientVisit] =  await Promise.all([patientQuery, diagnosisViewQuery]); 
     res.render('index', {
         patientData: patientData,
-        patientVisit: patientVisit
+        patientVisit: patientVisit,
+        session: req.session
     });
 });
 
 // work on completing the write to patients table function
+
+
+
+
 // work on the login functionality
+app.post('/login', function(req, res){
+// const userLogin = new Promise((resolve, reject)=>{
+    console.log("Inside login post")
+
+    var user_email_address = req.body.user_email_address;
+    var user_password = req.body.user_password;
+
+    console.log(user_email_address, user_password)
+
+    if(user_email_address && user_password)
+    {
+        query = `
+        SELECT * FROM employee 
+        WHERE Emailaddress = ?
+        `;
+        connection.query(query, [user_email_address], function(error, data){
+            console.log(data)
+
+            if(data.length > 0)
+            {
+                for(var count = 0; count < data.length; count++)
+                {
+                    if(data[count].user_password == user_password)
+                    {
+                        console.log("User password: " + user_password)
+                        console.log("Actual password: " + data[count].user_password)
+                        req.session.user_id = data[count].EmployeeTypeId;
+                        req.session.loggedin = true;
+                        req.session.firstname = data[count].Firstname;
+
+                        res.redirect("/");
+                        console.log(req.session + "inside user authentication")
+                        console.log("In user authentication place")
+                        return
+                    }
+                    else
+                    {
+                        // res.render('index');
+                        let message = "Incorrect email address or password"
+                        console.log(message)
+                        res.redirect('/login?message=' + encodeURIComponent(message));
+                        return
+                    }
+                }
+            }
+            else
+            {
+                // res.send('Incorrect Email Address');
+                let message = "Incorrect email address or password"
+                console.log(message)
+                res.redirect('/login?message=' + encodeURIComponent(message));
+                return
+            }
+            // res.end();
+        });
+    }
+    else
+    {
+        // res.send('Please Enter Email Address and Password Details');
+        let message = "Please enter username and password"
+        console.log(message)
+        res.redirect('/login?message=' + encodeURIComponent(message));
+        return
+        // res.end();
+    }
+// });
+
+});
+
+app.get('/login', (req, res) => {
+    let message = req.query.message || "";
+    res.render('login', { session: req.session, message: message });
+    console.log("Inside login get")
+});
+
+
+// Logout or destroy session
+app.get('/logout', function(request, response){
+
+    request.session.destroy();
+    let message = "User successfully logged out"
+    response.redirect('/login?message=' + encodeURIComponent(message));
+
+});
+
+
 // work on the delete from table functionality
